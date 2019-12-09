@@ -36,10 +36,10 @@ class Bullpen1Controller extends Controller {
         $data = array('sheep_name' => 'sheep'.$counter);
         $randomKey = array_rand($bullpensNameArray, 1);
         $bullpenName = $bullpensNameArray[$randomKey];
-        //DB::table($bullpensNameArray[$randomKey])->insert($data);
+        DB::table($bullpensNameArray[$randomKey])->insert($data);
         $sheepsList =  DB::table($bullpensNameArray[$randomKey])->get();
         $dataForHistory = array('day'=>$counter, 'bullpen'=>$bullpenName, 'sheep_name'=>'sheep'.$counter, 'status'=>'added');
-       // DB::table('histories')->insert($dataForHistory);
+        DB::table('histories')->insert($dataForHistory);
         $response = array(
            'status' => 'success',
            'sheepList' => $sheepsList,
@@ -51,12 +51,12 @@ class Bullpen1Controller extends Controller {
      public function killSheep(Request $request) {
         $bullpen = $request->bullpen;
         $sheep = DB::table($bullpen)->inRandomOrder()->first();
-        //DB::table($bullpen)->where('sheep_name', '=', $sheep->sheep_name)->delete();
+        DB::table($bullpen)->where('sheep_name', '=', $sheep->sheep_name)->delete();
          $currentBullpen =  DB::table($bullpen)->get();
          $counter = $request->counter;
          $dataForHistory = array('day'=>$counter, 'bullpen'=>$bullpen, 'sheep_name'=>$sheep->sheep_name, 'status'=>'killed');
          //dd($currentBullpen);
-        // $currentBullpen =  DB::table('histories')->insert($dataForHistory);
+         $currentBullpen =  DB::table('histories')->insert($dataForHistory);
          $response = array(
             'status' => 'success',
             'bullpen' => $currentBullpen
